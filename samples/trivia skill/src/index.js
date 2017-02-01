@@ -9,7 +9,7 @@
  */
 
 /**
- * This sample shows how to create a simple Flash Card skill. The skill
+ * This sample shows how to create a simple Trivia skill with a multiple choice format. The skill
  * supports 1 player at a time, and does not support games across sessions.
  */
 
@@ -21,133 +21,158 @@
  */
 var questions = [
     {
-        "What is A C?": [
-            "actinium"
+        "How many faces are on Mount Rushmore?": [
+            "4",
+            "6",
+            "3",
+            "5"
         ]
     },
     {
-        "What is A L?": [
-            "aluminum"
-            
+        "What is the best current estimate of U.S. national debt?:": [
+            "Twenty trillion dollars",
+            "Ten trillion dollars",
+            "50 Billion dollars",
+            "infinite money"
         ]
     },
     {
-        "What is A M?": [
-            "americium"
+        "How fast can a cheetah run at top speed?": [
+            "seventy miles per hour",
+            "one hundred miles per hour",
+            "twenty-five miles per hour",
+            "thirty miles per hour"
         ]
     },
     {
-        "What is S B?": [
-            "antimony"
+        "How many months are there in a year?:": [
+            "12",
+            "10",
+            "8",
+            "7"
         ]
     },
     {
-        "What is A R?": [
-            "argon"
+        "Where do winners eat?": [
+            "Subway",
+            "Burger King",
+            "Arby's",
+            "outback steakhouse"
         ]
     },
     {
-        "What is A S?": [
-            "arsenic"
+        "Which is the lie?": [
+            "Your tax dollars are put to the most efficient use possible",
+            "Taxation is theft",
+            "you're robbed blind of 40% of your wealth every year",
+            "you can build roads without government"
         ]
     },
     {
-        "What is A T?": [
-            "astatine"
+        "When was the magna carta signed?": [
+            "twelve fifteen",
+            "ten sixty-six",
+            "1776",
+            "1956"
         ]
     },
     {
-        "What is B A?": [
-            "barium"
+        "Who was the voice of the Joker in Batman the Animated Series?": [
+            "Mark Hammil",
+            "jim carrey",
+            "jack nicholson",
+            "hugh laurie"
         ]
     },
     {
-        "What is B K?": [
-            "berkelium"
+        "how many feet are in a mile?": [
+            "five-thousand two-hundred eighty",
+            "1000",
+            "sixteen hundred",
+            "500"
         ]
     },
     {
-        "What is B E?": [
-            "beryllium"
+        "How many gigabytes are in a terabyte?": [
+            "one thousand",
+            "one million",
+            "one hundred",
+            "one hudred twenty eight"
         ]
     },
     {
-        "What is B I?": [
-            "bismuth"
+        "Who is the world's fastest man?": [
+            "usain bolt",
+            "jesse owens",
+            "carl lewis",
+            "tyson gay"
         ]
-    },
-    {
-        "What is B H?": [
-            "bohrium"
+    },{
+        "name a spice": [
+            "paprika",
+            "clementine",
+            "violet",
+            "fuschia"
         ]
-    },
-    {
-        "What is B?": [
-            "boron"
+    },{
+        "Which country is in africa?": [
+            "laos",
+            "turkey",
+            "quebec",
+            "congolia"
         ]
-    },
-    {
-        "What is B R ?": [
-            "bromine"
+    },{
+        "which is not a part of the scientific method?": [
+            "confirm your experiment",
+            "create a hypothesis",
+            "design an experiment",
+            "observe and log results"
         ]
-    },
-    {
-        "What is C D ?": [
-            "cadmium"
+    },{
+        "which is an online store?": [
+            "amazon",
+            "himalaya",
+            "sahara",
+            "tundra"
         ]
-    },
-    {
-        "What is C A ?": [
-            "calcium"
+    },{
+        "which is known for its stealth?": [
+            "ninja",
+            "pirate",
+            "zombie",
+            "warrior"
         ]
-    },
-    {
-        "What is C F ?": [
-            "californium"
+    },{
+        "what is the longest thing?": [
+            "distance from earth to sun",
+            "distance from earth to moon",
+            "distance from earth to mars",
+            "distance around the world circumferentially"
         ]
-    },
-    {
-        "What is C ?": [
-            "carbon"
+    },{
+        "name a candy bar!": [
+            "twix",
+            "skittles",
+            "starburst",
+            "hot heads"
         ]
-    },
-    {
-        "What is C E ?": [
-            "cerium"
+    },{
+        "which prefix means opposite or against?": [
+            "anti",
+            "pre",
+            "super",
+            "post"
         ]
-    },
-    {
-        "What is C S ?": [
-            "cesium"
+    },{
+        "which is not a chess piece?": [
+            "castle",
+            "rook",
+            "pawn",
+            "bishop"
         ]
-    },
-    {
-        "What is C L ?": [
-            "chlorine"
-        ]
-    },
-    {
-        "What is C R ?": [
-            "chromium"
-        ]
-    },
-    {
-        "What is C O ?": [
-            "cobalt"
-        ]
-    },
-    {
-        "What is C U ?": [
-            "copper"
-        ]
-    },
-    {
-        "What is C M?": [
-            "Curium"
-        ]
-    },
+    }
+    
 ];
-
 
 // Route the incoming request based on type (LaunchRequest, IntentRequest,
 // etc.) The JSON body of the request is provided in the event parameter.
@@ -160,9 +185,9 @@ exports.handler = function (event, context) {
          * prevent someone else from configuring a skill that sends requests to this function.
          */
 
-//     if (event.session.application.applicationId !== "amzn1.echo-sdk-ams.app.05aecccb3-1461-48fb-a008-822ddrt6b516") {
-//         context.fail("Invalid Application ID");
-//      }
+     if (event.session.application.applicationId !== "amzn1.ask.skill.a7a921fc-a840-41e9-b032-7efbd81f1c3e") {
+         context.fail("Invalid Application ID");
+     }
 
         if (event.session.new) {
             onSessionStarted({requestId: event.request.requestId}, event.session);
@@ -245,12 +270,14 @@ function onIntent(intentRequest, session, callback) {
     } else if ("AMAZON.RepeatIntent" === intentName) {
         handleRepeatRequest(intent, session, callback);
     } else if ("AMAZON.HelpIntent" === intentName) {
-            handleGetHelpRequest(intent, session, callback);
+        handleGetHelpRequest(intent, session, callback);
     } else if ("AMAZON.StopIntent" === intentName) {
         handleFinishSessionRequest(intent, session, callback);
     } else if ("AMAZON.CancelIntent" === intentName) {
         handleFinishSessionRequest(intent, session, callback);
-    } 
+    } else {
+        throw "Invalid intent";
+    }
 }
 
 /**
@@ -266,17 +293,14 @@ function onSessionEnded(sessionEndedRequest, session) {
 
 // ------- Skill specific business logic -------
 
-var ANSWER_COUNT = 1;
+var ANSWER_COUNT = 4;
 var GAME_LENGTH = 5;
-// Be sure to change this for your skill.
-var CARD_TITLE = "Flash Cards"; 
+var CARD_TITLE = "Block Trivia"; // Be sure to change this for your skill.
 
 function getWelcomeResponse(callback) {
-    // Be sure to change this for your skill.
     var sessionAttributes = {},
-        //CHANGE THIS TEXT
         speechOutput = "I will ask you " + GAME_LENGTH.toString()
-            + " questions, try to get as many right as you can. Just say the answer. Let's begin. ",
+            + " questions, try to get as many right as you can. Just say the number of the answer. Let's begin. ",
         shouldEndSession = false,
 
         gameQuestions = populateGameQuestions(),
@@ -284,13 +308,13 @@ function getWelcomeResponse(callback) {
         roundAnswers = populateRoundAnswers(gameQuestions, 0, correctAnswerIndex),
 
         currentQuestionIndex = 0,
-        spokenQuestion = Object.keys(questions[gameQuestions[currentQuestionIndex]]),
-        repromptText = spokenQuestion,
+        spokenQuestion = Object.keys(questions[gameQuestions[currentQuestionIndex]])[0],
+        repromptText = "Question 1. " + spokenQuestion + " ",
 
         i, j;
 
     for (i = 0; i < ANSWER_COUNT; i++) {
-        repromptText += ""
+        repromptText += (i+1).toString() + ". " + roundAnswers[i] + ". "
     }
     speechOutput += repromptText;
     sessionAttributes = {
@@ -386,7 +410,7 @@ function handleAnswerRequest(intent, session, callback) {
         // If the user provided answer isn't a number > 0 and < ANSWER_COUNT,
         // return an error message to the user. Remember to guide the user into providing correct values.
         var reprompt = session.attributes.speechOutput;
-        var speechOutput = "Sorry, your answer is not is our list. " + reprompt;
+        var speechOutput = "Your answer must be a number between 1 and " + ANSWER_COUNT + ". " + reprompt;
         callback(session.attributes,
             buildSpeechletResponse(CARD_TITLE, speechOutput, reprompt, false));
     } else {
@@ -398,33 +422,33 @@ function handleAnswerRequest(intent, session, callback) {
 
         var speechOutputAnalysis = "";
 
-        if (answerSlotValid && intent.slots.Answer.value.toUpperCase() == correctAnswerText.toUpperCase()) {
+        if (answerSlotValid && parseInt(intent.slots.Answer.value) == correctAnswerIndex) {
             currentScore++;
             speechOutputAnalysis = "correct. ";
         } else {
             if (!userGaveUp) {
                 speechOutputAnalysis = "wrong. "
             }
-            speechOutputAnalysis += "The correct answer is " + correctAnswerText + ". ";
+            speechOutputAnalysis += "The correct answer is " + correctAnswerIndex + ": " + correctAnswerText + ". ";
         }
         // if currentQuestionIndex is 4, we've reached 5 questions (zero-indexed) and can exit the game session
         if (currentQuestionIndex == GAME_LENGTH - 1) {
             speechOutput = userGaveUp ? "" : "That answer is ";
             speechOutput += speechOutputAnalysis + "You got " + currentScore.toString() + " out of "
-                + GAME_LENGTH.toString() + " questions correct. Thank you for learning with Alexa!";
+                + GAME_LENGTH.toString() + " questions correct. Thank you for playing!";
             callback(session.attributes,
                 buildSpeechletResponse(CARD_TITLE, speechOutput, "", true));
         } else {
             currentQuestionIndex += 1;
-            var spokenQuestion = Object.keys(questions[gameQuestions[currentQuestionIndex]]);
+            var spokenQuestion = Object.keys(questions[gameQuestions[currentQuestionIndex]])[0];
             // Generate a random index for the correct answer, from 0 to 3
             correctAnswerIndex = Math.floor(Math.random() * (ANSWER_COUNT));
             var roundAnswers = populateRoundAnswers(gameQuestions, currentQuestionIndex, correctAnswerIndex),
 
                 questionIndexForSpeech = currentQuestionIndex + 1,
-                repromptText =  spokenQuestion ;
+                repromptText = "Question " + questionIndexForSpeech.toString() + ". " + spokenQuestion + " ";
             for (var i = 0; i < ANSWER_COUNT; i++) {
-                repromptText +=  ""
+                repromptText += (i+1).toString() + ". " + roundAnswers[i] + ". "
             }
             speechOutput += userGaveUp ? "" : "That answer is ";
             speechOutput += speechOutputAnalysis + "Your score is " + currentScore.toString() + ". " + repromptText;
@@ -457,20 +481,24 @@ function handleRepeatRequest(intent, session, callback) {
 }
 
 function handleGetHelpRequest(intent, session, callback) {
-    // Set a flag to track that we're in the Help state.
-    if (session.attributes) {
-        session.attributes.userPromptedToContinue = true;
-    } else {
-        // In case user invokes and asks for help simultaneously.
-        session.attributes = { userPromptedToContinue: true };
-    }
+    // Provide a help prompt for the user, explaining how the game is played. Then, continue the game
+    // if there is one in progress, or provide the option to start another one.
     
+    // Ensure that session.attributes has been initialized
+    if (!session.attributes) {
+        session.attributes = {};
+    }
+
+    // Set a flag to track that we're in the Help state.
+    session.attributes.userPromptedToContinue = true;
+
     // Do not edit the help dialogue. This has been created by the Alexa team to demonstrate best practices.
 
-    var speechOutput = "To start a new game at any time, say, start new game. "
-        + "To repeat the last element, say, repeat. "
+    var speechOutput = "I will ask you " + GAME_LENGTH + " multiple choice questions. Respond with the number of the answer. "
+        + "For example, say one, two, three, or four. To start a new game at any time, say, start game. "
+        + "To repeat the last question, say, repeat. "
         + "Would you like to keep playing?",
-        repromptText = "Try to get the right answer. "
+        repromptText = "To give an answer to a question, respond with the number of the answer . "
         + "Would you like to keep playing?";
         var shouldEndSession = false;
     callback(session.attributes,
@@ -478,15 +506,15 @@ function handleGetHelpRequest(intent, session, callback) {
 }
 
 function handleFinishSessionRequest(intent, session, callback) {
-    // End the session with a custom closing statment when the user wants to quit the game
+    // End the session with a "Good bye!" if the user wants to quit the game
     callback(session.attributes,
-        buildSpeechletResponseWithoutCard("Thanks for playing Flash Cards!", "", true));
+        buildSpeechletResponseWithoutCard("Good bye!", "", true));
 }
 
 function isAnswerSlotValid(intent) {
     var answerSlotFilled = intent.slots && intent.slots.Answer && intent.slots.Answer.value;
     var answerSlotIsInt = answerSlotFilled && !isNaN(parseInt(intent.slots.Answer.value));
-    return 1;
+    return answerSlotIsInt && parseInt(intent.slots.Answer.value) < (ANSWER_COUNT + 1) && parseInt(intent.slots.Answer.value) > 0;
 }
 
 // ------- Helper functions to build responses -------
@@ -536,3 +564,4 @@ function buildResponse(sessionAttributes, speechletResponse) {
         response: speechletResponse
     };
 }
+
